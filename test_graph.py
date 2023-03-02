@@ -60,10 +60,12 @@ def test_cant_read_non_existent_node(graph_1):
     graph_1.add_node("Chris")
     assert not graph_1.has_node("Andrew")
 
+
 def test_dont_create_duplicate_node(graph_1):
     andrew_id_1 = graph_1.add_node("Andrew")
     andrew_id_2 = graph_1.add_node("Andrew")
     assert andrew_id_1 == andrew_id_2
+
 
 def test_get_node(graph_1):
     andrew_id = graph_1.add_node("Andrew")
