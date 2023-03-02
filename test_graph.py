@@ -3,12 +3,23 @@ import os.path
 import pytest
 from pysondb import PysonDB
 
+from graph import Graph
+
 
 @pytest.fixture
 def db_test():
     db = PysonDB("test.json")
     yield db
     del db
+    os.remove("test.json")
+
+
+@pytest.fixture()
+def graph_1():
+    g = Graph("test.json")
+    yield g
+
+    del g
     os.remove("test.json")
 
 
@@ -34,13 +45,22 @@ def test_get_node_by_name(db_test):
     pass
 
 
-class Graph:
-    def __init__(self, filename:str):
-        self.db = PysonDB(filename)
-
-
-
 def test_create_graph():
     g = Graph("test.json")
     os.path.isfile("test.json")
     os.remove("test.json")
+
+
+def test_create_read_new_node(graph_1):
+    graph_1.add_node("Andrew")
+    assert graph_1.has_node("Andrew")
+
+
+def test_cant_read_non_existent_node(graph_1):
+    graph_1.add_node("Chris")
+    assert not graph_1.has_node("Andrew")
+
+def test_dont_create_duplicate_node(graph_1):
+    andrew_id_1 = graph_1.add_node("Andrew")
+    andrew_id_2 = graph_1.add_node("Andrew")
+    assert andrew_id_1 == andrew_id_2
