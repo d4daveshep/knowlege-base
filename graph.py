@@ -12,6 +12,13 @@ class Graph:
         got = self.db.get_by_query(query=lambda x: x["name"] == name)
         return len(got) > 0
 
+    def get_node_id(self, name:str) -> str:
+        got = self.db.get_by_query(query=lambda x: x["name"] == name)
+        if len(got):
+            return list(got.keys())[0]
+        else:
+            return ""
+
 
 def get_by_name(name: str, data: dict) -> bool:
     return data["name"] == name

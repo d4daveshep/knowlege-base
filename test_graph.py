@@ -64,3 +64,12 @@ def test_dont_create_duplicate_node(graph_1):
     andrew_id_1 = graph_1.add_node("Andrew")
     andrew_id_2 = graph_1.add_node("Andrew")
     assert andrew_id_1 == andrew_id_2
+
+def test_get_node(graph_1):
+    andrew_id = graph_1.add_node("Andrew")
+    chris_id = graph_1.add_node("Chris")
+    paul_id = graph_1.add_node("Paul")
+
+    assert andrew_id == graph_1.get_node_id("Andrew")
+    assert chris_id == graph_1.get_node_id("Chris")
+    assert paul_id == graph_1.get_node_id("Paul")
