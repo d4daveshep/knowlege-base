@@ -75,3 +75,13 @@ def test_get_node(graph_1):
     assert andrew_id == graph_1.get_node_id("Andrew")
     assert chris_id == graph_1.get_node_id("Chris")
     assert paul_id == graph_1.get_node_id("Paul")
+
+def test_create_read_connection(graph_1):
+    conn_id = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
+
+    assert graph_1.has_node("Andrew")
+    assert graph_1.has_node("Chief Engineer")
+    assert graph_1.has_connection("has title")
+
+    got_conn_ids = graph_1.get_connection_ids("has title")
+    assert conn_id in got_conn_ids
