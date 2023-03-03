@@ -1,54 +1,18 @@
 import os.path
 
 import pytest
-from pysondb import PysonDB
 
 from graph import Graph
 
 
-@pytest.fixture
-def db_test():
-    db = PysonDB("test.json")
-    yield db
-    del db
-    os.remove("test.json")
-
-
 @pytest.fixture()
 def graph_1():
-    g = Graph("test.json")
+    g = Graph("test")
     yield g
 
     del g
-    os.remove("test.json")
-
-
-def test_create_db(db_test):
-    assert os.path.isfile("test.json")
-
-
-def test_add_node_to_db(db_test):
-    node = {"type": "node", "name": "Andrew"}
-    node_id = db_test.add(node)
-    assert db_test.get_by_id(node_id) == node
-
-
-def test_get_node_by_name(db_test):
-    node = {"type": "node", "name": "Andrew"}
-    db_test.add(node)
-
-    got = db_test.get_by_query(query=lambda x: x["name"] == "Andrew")
-    assert len(got) == 1
-    values = list(got.values())
-    assert list(got.values())[0]["name"] == "Andrew"
-
-    pass
-
-
-def test_create_graph():
-    g = Graph("test.json")
-    os.path.isfile("test.json")
-    os.remove("test.json")
+    os.remove("test_nodes.json")
+    os.remove("test_connections.json")
 
 
 def test_create_read_new_node(graph_1):
@@ -75,6 +39,7 @@ def test_get_node(graph_1):
     assert andrew_id == graph_1.get_node_id("Andrew")
     assert chris_id == graph_1.get_node_id("Chris")
     assert paul_id == graph_1.get_node_id("Paul")
+
 
 def test_create_read_connection(graph_1):
     conn_id = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
