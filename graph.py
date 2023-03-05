@@ -50,13 +50,50 @@ class Graph:
             })
         return conn_id
 
-    def has_connection(self, name: str) -> bool:
-        conn_id = self.get_connection_ids(name)
+    def has_connection_named(self, name: str) -> bool:
+        conn_id = self.get_connection_ids_named(name)
         return len(conn_id) > 0
 
-    def get_connection_ids(self, name: str) -> list:
+    def has_connection(self, subject: str, connection_name: str, target: str) -> bool:
+        subject_id = self.get_node_id(subject)
+        target_id = self.get_node_id(target)
+        if subject_id == "" or target_id == "":
+            return False
+
+        got = self.connections_db.get_by_query(
+            query=lambda c: c["subject_id"] == subject_id and
+                            c["name"] == connection_name and
+                            c["target_id"] == target_id
+        )
+        return len(got) > 0
+
+    def get_connection_ids_named(self, name: str) -> list:
         got = self.connections_db.get_by_query(query=lambda n: n["name"] == name)
         if len(got):
             return list(got.keys())
         else:
             return []
+
+    def delete_connection_by_id(self, conn_id: str) -> None:
+        self.connections_db.delete_by_id(conn_id)
+
+    def delete_connection(self, subject: str, connection_name: str, target: str) -> None:
+        conn_id = self.get_connection_id(subject, connection_name, target)
+        self.connections_db.delete_by_id(conn_id)
+
+    def get_connection_id(self, subject:str, connection_name:str, target:str) -> str:
+        subject_id = self.get_node_id(subject)
+        target_id = self.get_node_id(target)
+        if subject_id == "" or target_id == "":
+            return ""
+
+        got = self.connections_db.get_by_query(
+            query=lambda c: c["subject_id"] == subject_id and
+                            c["name"] == connection_name and
+                            c["target_id"] == target_id
+        )
+        if len(got):
+            return list(got.keys())[0]
+        else:
+            return ""
+

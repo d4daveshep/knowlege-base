@@ -1,6 +1,7 @@
 import os.path
 
 import pytest
+from pysondb.errors import IdDoesNotExistError
 
 from graph import Graph
 
@@ -20,10 +21,12 @@ def test_create_read_one_connection(graph_1):
 
     assert graph_1.has_node("Andrew")
     assert graph_1.has_node("Chief Engineer")
-    assert graph_1.has_connection("has title")
+    assert graph_1.has_connection_named("has title")
+    assert graph_1.has_connection("Andrew", "has title", "Chief Engineer")
 
-    got_conn_ids = graph_1.get_connection_ids("has title")
+    got_conn_ids = graph_1.get_connection_ids_named("has title")
     assert conn_id in got_conn_ids
+
 
 def test_create_read_multiple_connections(graph_1):
     conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
@@ -31,12 +34,56 @@ def test_create_read_multiple_connections(graph_1):
     conn_id_3 = graph_1.add_connection("Andrew", "knows", "Java")
     conn_id_4 = graph_1.add_connection("Andrew", "knows", "Spring Boot")
 
-    assert graph_1.has_connection("has title")
-    assert graph_1.has_connection("worked on")
-    assert graph_1.has_connection("knows")
+    assert graph_1.has_connection_named("has title")
+    assert graph_1.has_connection_named("worked on")
+    assert graph_1.has_connection_named("knows")
 
-    got_conn_ids = graph_1.get_connection_ids("knows")
+    got_conn_ids = graph_1.get_connection_ids_named("knows")
     assert len(got_conn_ids) == 2
     assert conn_id_3 in got_conn_ids
     assert conn_id_4 in got_conn_ids
+
+
+def test_delete_connection_by_id(graph_1):
+    conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
+    conn_id_2 = graph_1.add_connection("Andrew", "worked on", "TWG")
+    conn_id_3 = graph_1.add_connection("Andrew", "knows", "Java")
+    conn_id_4 = graph_1.add_connection("Andrew", "knows", "Spring Boot")
+
+    graph_1.delete_connection_by_id(conn_id_3)
+    got_conn_ids = graph_1.get_connection_ids_named("knows")
+    assert len(got_conn_ids) == 1
+    assert conn_id_3 not in got_conn_ids
+    assert conn_id_4 in got_conn_ids
+
+def test_cant_delete_nonexistent_connection(graph_1):
+    conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
+
+    with pytest.raises(IdDoesNotExistError):
+        graph_1.delete_connection_by_id("fake_id")
+
+    with pytest.raises(IdDoesNotExistError):
+        graph_1.delete_connection("Paul", "has title", "Chief Engineer")
+    with pytest.raises(IdDoesNotExistError):
+        graph_1.delete_connection("Andrew", "has title", "Senior Engineer")
+    with pytest.raises(IdDoesNotExistError):
+        graph_1.delete_connection("Andrew", "is a", "Chief Engineer")
+
+    assert True
+
+def test_delete_connection(graph_1):
+    conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
+    conn_id_2 = graph_1.add_connection("Andrew", "worked on", "TWG")
+    conn_id_3 = graph_1.add_connection("Andrew", "knows", "Java")
+    conn_id_4 = graph_1.add_connection("Andrew", "knows", "Spring Boot")
+
+    graph_1.delete_connection("Andrew", "has title", "Chief Engineer")
+    assert not graph_1.has_connection_named("has title")
+
+    graph_1.delete_connection("Andrew", "knows", "Java")
+    assert graph_1.has_connection_named("knows")
+
+    assert not graph_1.has_connection("Andrew", "knows", "Java")
+    assert graph_1.has_connection("Andrew", "knows", "Spring Boot")
+
 
