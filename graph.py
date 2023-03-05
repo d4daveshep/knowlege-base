@@ -81,7 +81,7 @@ class Graph:
         conn_id = self.get_connection_id(subject, connection_name, target)
         self.connections_db.delete_by_id(conn_id)
 
-    def get_connection_id(self, subject:str, connection_name:str, target:str) -> str:
+    def get_connection_id(self, subject: str, connection_name: str, target: str) -> str:
         subject_id = self.get_node_id(subject)
         target_id = self.get_node_id(target)
         if subject_id == "" or target_id == "":
@@ -96,4 +96,3 @@ class Graph:
             return list(got.keys())[0]
         else:
             return ""
-

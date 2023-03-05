@@ -56,6 +56,7 @@ def test_delete_connection_by_id(graph_1):
     assert conn_id_3 not in got_conn_ids
     assert conn_id_4 in got_conn_ids
 
+
 def test_cant_delete_nonexistent_connection(graph_1):
     conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
 
@@ -71,6 +72,7 @@ def test_cant_delete_nonexistent_connection(graph_1):
 
     assert True
 
+
 def test_delete_connection(graph_1):
     conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
     conn_id_2 = graph_1.add_connection("Andrew", "worked on", "TWG")
@@ -85,5 +87,3 @@ def test_delete_connection(graph_1):
 
     assert not graph_1.has_connection("Andrew", "knows", "Java")
     assert graph_1.has_connection("Andrew", "knows", "Spring Boot")
-
-
