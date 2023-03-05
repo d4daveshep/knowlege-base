@@ -54,9 +54,9 @@ class Graph:
         conn_id = self.get_connection_ids(name)
         return len(conn_id) > 0
 
-    def get_connection_ids(self, name: str) -> str:
+    def get_connection_ids(self, name: str) -> list:
         got = self.connections_db.get_by_query(query=lambda n: n["name"] == name)
         if len(got):
-            return list(got.keys())[0]
+            return list(got.keys())
         else:
-            return ""
+            return []
