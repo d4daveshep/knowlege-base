@@ -41,12 +41,22 @@ def test_get_node(graph_1):
     assert paul_id == graph_1.get_node_id("Paul")
 
 
-def test_create_read_connection(graph_1):
-    conn_id = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
+def test_update_node(graph_1):
+    andrew_id = graph_1.add_node("Andrew")
+    graph_1.update_node("Andrew", "Paul")
+    paul_id = graph_1.get_node_id("Paul")
+    assert paul_id == andrew_id
 
-    assert graph_1.has_node("Andrew")
-    assert graph_1.has_node("Chief Engineer")
-    assert graph_1.has_connection("has title")
 
-    got_conn_ids = graph_1.get_connection_ids("has title")
-    assert conn_id in got_conn_ids
+def test_delete_node(graph_1):
+    andrew_id = graph_1.add_node("Andrew")
+    assert len(andrew_id)
+
+    graph_1.delete_node("Andrew")
+    andrew_id = graph_1.get_node_id("Andrew")
+    assert not andrew_id
+
+
+def test_delete_node_deletes_connections():
+    # TODO
+    assert False
