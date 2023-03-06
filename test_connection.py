@@ -87,3 +87,22 @@ def test_delete_connection(graph_1):
 
     assert not graph_1.has_connection("Andrew", "knows", "Java")
     assert graph_1.has_connection("Andrew", "knows", "Spring Boot")
+
+def test_get_connections_to_node(graph_1):
+    conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
+    conn_id_2 = graph_1.add_connection("Andrew", "worked on", "TWG")
+    conn_id_3 = graph_1.add_connection("Andrew", "knows", "Java")
+    conn_id_4 = graph_1.add_connection("Andrew", "knows", "Spring Boot")
+
+    andrew_connections = graph_1.get_connections_to_node("Andrew")
+    assert len(andrew_connections) == 4
+    assert conn_id_1 in andrew_connections
+    assert conn_id_2 in andrew_connections
+    assert conn_id_3 in andrew_connections
+    assert conn_id_4 in andrew_connections
+
+    java_connections = graph_1.get_connections_to_node("Java")
+    assert len(java_connections) == 1
+    assert conn_id_3 in java_connections
+
+

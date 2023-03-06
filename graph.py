@@ -35,6 +35,11 @@ class Graph:
         self.nodes_db.update_by_id(node_id, {"name": to_name})
 
     def delete_node(self, name: str) -> None:
+        # delete the connections first
+        conn_ids = self.get_connections_to_node(name)
+        for conn_id in conn_ids:
+            self.connections_db.delete_by_id(conn_id)
+        # now delete the node
         node_id = self.get_node_id(name)
         self.nodes_db.delete_by_id(node_id)
 
@@ -96,3 +101,14 @@ class Graph:
             return list(got.keys())[0]
         else:
             return ""
+
+    def get_connections_to_node(self, node_name: str) -> list:
+        node_id = self.get_node_id(node_name)
+        got = self.connections_db.get_by_query(
+            query=lambda c: c["subject_id"] == node_id or
+                            c["target_id"] == node_id
+        )
+        if len(got) > 0:
+            return list(got.keys())
+        else:
+            return []
