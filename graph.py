@@ -1,3 +1,5 @@
+from collections import Counter
+
 from pysondb import PysonDB
 
 
@@ -112,3 +114,12 @@ class Graph:
             return list(got.keys())
         else:
             return []
+
+    def count_connections(self) -> int:
+        return len(self.connections_db.get_all())
+
+    def count_nodes(self) -> int:
+        all = self.connections_db.get_all()
+        for conn in all.values():
+            pass
+        return 0
