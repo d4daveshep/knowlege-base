@@ -12,7 +12,6 @@ def graph_1():
     yield g
 
     del g
-    os.remove("test_nodes.json")
     os.remove("test_connections.json")
 
 
