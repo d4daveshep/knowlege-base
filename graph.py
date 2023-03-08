@@ -7,10 +7,10 @@ class Graph:
     def __init__(self, filename: str):
         self.connections_db = PysonDB(f"{filename}_connections.json")
 
-        # define schemas
-        self.connections_db.add_new_key(key="name", default="str")
-        self.connections_db.add_new_key(key="subject", default="str")
-        self.connections_db.add_new_key(key="target", default="str")
+        # # define schemas
+        # self.connections_db.add_new_key(key="name", default="str")
+        # self.connections_db.add_new_key(key="subject", default="str")
+        # self.connections_db.add_new_key(key="target", default="str")
 
 
     def has_node(self, name: str) -> bool:
@@ -21,8 +21,14 @@ class Graph:
         return len(got) > 0
 
     def update_node(self, from_name: str, to_name: str) -> None:
-        conns = self.get_connections_to_node(from_name)
-        pass
+        conn_ids = self.get_connections_to_node(from_name)
+        for conn_id in conn_ids:
+            conn = self.connections_db.get_by_id(conn_id)
+            if conn["subject"] == from_name:
+                conn["subject"] = to_name
+            if conn["target"] == from_name:
+                conn["target"] = to_name
+            self.connections_db.update_by_id(conn_id,conn)
 
     def delete_node(self, name: str) -> None:
         # delete the connections first
@@ -91,6 +97,8 @@ class Graph:
 
     def count_nodes(self) -> int:
         all = self.connections_db.get_all()
+        nodes = set()
         for conn in all.values():
-            pass
-        return 0
+            nodes.add(conn["subject"])
+            nodes.add(conn["target"])
+        return len(nodes)

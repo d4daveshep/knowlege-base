@@ -33,7 +33,7 @@ def graph():
     yield g
 
     del g
-    os.remove("test_nodes.json")
+    # os.remove("test_nodes.json")
     os.remove("test_connections.json")
 
 def test_full_CRUD_use_case(graph):
