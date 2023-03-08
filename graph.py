@@ -1,5 +1,3 @@
-from collections import Counter
-
 from pysondb import PysonDB
 
 
@@ -12,7 +10,6 @@ class Graph:
         # self.connections_db.add_new_key(key="subject", default="str")
         # self.connections_db.add_new_key(key="target", default="str")
 
-
     def has_node(self, name: str) -> bool:
         got = self.connections_db.get_by_query(
             query=lambda c: c["subject"] == name or
@@ -21,18 +18,18 @@ class Graph:
         return len(got) > 0
 
     def update_node(self, from_name: str, to_name: str) -> None:
-        conn_ids = self.get_connections_to_node(from_name)
+        conn_ids = self.get_connection_ids_to_node(from_name)
         for conn_id in conn_ids:
             conn = self.connections_db.get_by_id(conn_id)
             if conn["subject"] == from_name:
                 conn["subject"] = to_name
             if conn["target"] == from_name:
                 conn["target"] = to_name
-            self.connections_db.update_by_id(conn_id,conn)
+            self.connections_db.update_by_id(conn_id, conn)
 
     def delete_node(self, name: str) -> None:
         # delete the connections first
-        conn_ids = self.get_connections_to_node(name)
+        conn_ids = self.get_connection_ids_to_node(name)
         for conn_id in conn_ids:
             self.connections_db.delete_by_id(conn_id)
 
@@ -64,6 +61,13 @@ class Graph:
         else:
             return []
 
+    def get_connections_named(self, name: str) -> list:
+        got = self.connections_db.get_by_query(query=lambda n: n["name"] == name)
+        if len(got):
+            return list(got.values())
+        else:
+            return []
+
     def delete_connection_by_id(self, conn_id: str) -> None:
         self.connections_db.delete_by_id(conn_id)
 
@@ -82,13 +86,23 @@ class Graph:
         else:
             return ""
 
-    def get_connections_to_node(self, node_name: str) -> list:
+    def get_connection_ids_to_node(self, node_name: str) -> list:
         got = self.connections_db.get_by_query(
             query=lambda c: c["subject"] == node_name or
                             c["target"] == node_name
         )
         if len(got) > 0:
             return list(got.keys())
+        else:
+            return []
+
+    def get_connection_data_to_node(self, node_name: str) -> list:
+        got = self.connections_db.get_by_query(
+            query=lambda c: c["subject"].casefold() == node_name.casefold() or
+                            c["target"].casefold() == node_name.casefold()
+        )
+        if len(got) > 0:
+            return list(got.values())
         else:
             return []
 
