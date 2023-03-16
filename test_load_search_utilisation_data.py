@@ -35,4 +35,7 @@ def test_load_staff_list(utilisation_graph):
     assert utilisation_graph.has_connection("Aaron Ooi", "under GM", "Dan Cornwall")
     assert utilisation_graph.has_connection("Zoe Xu", "under GM", "Malen Hurbuns")
 
+def test_load_time_by_taks(utilisation_graph):
+    assert False  # TODO
+
 
