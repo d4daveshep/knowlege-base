@@ -85,7 +85,7 @@ def test_full_CRUD_use_case(graph):
     assert len(names) == 1
     assert "knows" in names
 
-    # find who knows where
+    # find who knows what
     conns = graph.get_connections_named("knows")
     assert len(conns) == 6
 

@@ -42,7 +42,7 @@ def test_create_read_multiple_connections(graph_1):
     assert conn_id_3 in got_conn_ids
     assert conn_id_4 in got_conn_ids
 
-    got_conns = graph_1.get_connection_named("knows")
+    got_conns = graph_1.get_connections_named("knows")
     assert len(got_conns) == 2
 
 
@@ -110,3 +110,15 @@ def test_get_connections_to_node(graph_1):
 
     andrew_connections = graph_1.get_connection_data_to_node("Andrew")
     assert len(andrew_connection_ids) == 4
+
+def test_ignore_duplicate_connections(graph_1):
+    conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
+    conn_id_2 = graph_1.add_connection("Andrew", "worked on", "TWG")
+    conn_id_3 = graph_1.add_connection("Andrew", "knows", "Java")
+    conn_id_4 = graph_1.add_connection("Andrew", "knows", "Spring Boot")
+
+    conn_id_5 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
+    assert graph_1.count_connections() == 4
+    assert conn_id_5 == conn_id_1
+
+

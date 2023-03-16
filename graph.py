@@ -34,12 +34,15 @@ class Graph:
             self.connections_db.delete_by_id(conn_id)
 
     def add_connection(self, subject: str, connection_name: str, target: str) -> str:
-        conn_id = self.connections_db.add(
-            {
-                "name": connection_name,
-                "subject": subject,
-                "target": target
-            })
+
+        conn_id = self.get_connection_id(subject,connection_name,target)
+        if conn_id == "":
+            conn_id = self.connections_db.add(
+                {
+                    "name": connection_name,
+                    "subject": subject,
+                    "target": target
+                })
         return conn_id
 
     def has_connection_named(self, name: str) -> bool:
