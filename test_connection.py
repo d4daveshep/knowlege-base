@@ -118,6 +118,7 @@ def test_get_connections_to_node(graph_1):
     andrew_connections = graph_1.get_connection_data_to_node("Andrew")
     assert len(andrew_connection_ids) == 4
 
+
 def test_ignore_duplicate_connections(graph_1):
     conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
     conn_id_2 = graph_1.add_connection("Andrew", "worked on", "TWG")
@@ -127,5 +128,3 @@ def test_ignore_duplicate_connections(graph_1):
     conn_id_5 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
     assert graph_1.count_connections() == 4
     assert conn_id_5 == conn_id_1
-
-
