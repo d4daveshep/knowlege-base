@@ -14,8 +14,7 @@ def graph():
     yield g
 
     del g
-    # os.remove("test_nodes.json")
-    os.remove("test_connections.json")
+    os.remove("test.json")
 
 
 def set_up_data(graph: Graph):

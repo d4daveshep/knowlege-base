@@ -12,7 +12,7 @@ def graph_1():
     yield g
 
     del g
-    os.remove("test_connections.json")
+    os.remove("test.json")
 
 
 def test_create_read_one_connection(graph_1):

@@ -3,7 +3,7 @@ from pysondb import PysonDB
 
 class Graph:
     def __init__(self, filename: str):
-        self.connections_db = PysonDB(f"{filename}_connections.json")
+        self.connections_db = PysonDB(f"{filename}.json")
 
         # # define schemas
         # self.connections_db.add_new_key(key="name", default="str")

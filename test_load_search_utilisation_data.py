@@ -11,7 +11,7 @@ def utilisation_graph():
     yield g
 
     # del g
-    # os.remove("utilisation_connections.json")
+    # os.remove("utilisation.json")
 
 def parse_staff_list_line(line) -> tuple:
     data = line.strip().split(',')
