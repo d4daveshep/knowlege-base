@@ -21,9 +21,13 @@ def test_create_read_one_connection(graph_1):
     assert graph_1.has_node("Andrew")
     assert graph_1.has_node("Chief Engineer")
     assert graph_1.has_connection_named("has title")
+    assert graph_1.has_connection_named("HAS TITLE")
     assert graph_1.has_connection("Andrew", "has title", "Chief Engineer")
+    assert graph_1.has_connection("andrew", "has title", "chief engineer")
 
     got_conn_ids = graph_1.get_connection_ids_named("has title")
+    assert conn_id in got_conn_ids
+    got_conn_ids = graph_1.get_connection_ids_named("HAS title")
     assert conn_id in got_conn_ids
 
 
@@ -43,6 +47,9 @@ def test_create_read_multiple_connections(graph_1):
     assert conn_id_4 in got_conn_ids
 
     got_conns = graph_1.get_connections_named("knows")
+    assert len(got_conns) == 2
+
+    got_conns = graph_1.get_connections_named("KNOWS")
     assert len(got_conns) == 2
 
 

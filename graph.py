@@ -12,8 +12,8 @@ class Graph:
 
     def has_node(self, name: str) -> bool:
         got = self.connections_db.get_by_query(
-            query=lambda c: c["subject"] == name or
-                            c["target"] == name
+            query=lambda c: c["subject"].casefold() == name.casefold() or
+                            c["target"].casefold() == name.casefold()
         )
         return len(got) > 0
 
@@ -21,9 +21,9 @@ class Graph:
         conn_ids = self.get_connection_ids_to_node(from_name)
         for conn_id in conn_ids:
             conn = self.connections_db.get_by_id(conn_id)
-            if conn["subject"] == from_name:
+            if conn["subject"].casefold() == from_name.casefold():
                 conn["subject"] = to_name
-            if conn["target"] == from_name:
+            if conn["target"].casefold() == from_name.casefold():
                 conn["target"] = to_name
             self.connections_db.update_by_id(conn_id, conn)
 
@@ -50,21 +50,25 @@ class Graph:
 
     def has_connection(self, subject: str, connection_name: str, target: str) -> bool:
         got = self.connections_db.get_by_query(
-            query=lambda c: c["subject"] == subject and
-                            c["name"] == connection_name and
-                            c["target"] == target
+            query=lambda c: c["subject"].casefold() == subject.casefold() and
+                            c["name"].casefold() == connection_name.casefold() and
+                            c["target"].casefold() == target.casefold()
         )
         return len(got) > 0
 
     def get_connection_ids_named(self, name: str) -> list:
-        got = self.connections_db.get_by_query(query=lambda n: n["name"] == name)
+        got = self.connections_db.get_by_query(
+            query=lambda n: n["name"].casefold() == name.casefold()
+        )
         if len(got):
             return list(got.keys())
         else:
             return []
 
     def get_connections_named(self, name: str) -> list:
-        got = self.connections_db.get_by_query(query=lambda n: n["name"] == name)
+        got = self.connections_db.get_by_query(
+            query=lambda n: n["name"].casefold() == name.casefold()
+        )
         if len(got):
             return list(got.values())
         else:
@@ -79,9 +83,9 @@ class Graph:
 
     def get_connection_id(self, subject: str, connection_name: str, target: str) -> str:
         got = self.connections_db.get_by_query(
-            query=lambda c: c["subject"] == subject and
-                            c["name"] == connection_name and
-                            c["target"] == target
+            query=lambda c: c["subject"].casefold() == subject.casefold() and
+                            c["name"].casefold() == connection_name.casefold() and
+                            c["target"].casefold() == target.casefold()
         )
         if len(got):
             return list(got.keys())[0]
@@ -90,8 +94,8 @@ class Graph:
 
     def get_connection_ids_to_node(self, node_name: str) -> list:
         got = self.connections_db.get_by_query(
-            query=lambda c: c["subject"] == node_name or
-                            c["target"] == node_name
+            query=lambda c: c["subject"].casefold() == node_name.casefold() or
+                            c["target"].casefold() == node_name.casefold()
         )
         if len(got) > 0:
             return list(got.keys())
