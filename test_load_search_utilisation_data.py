@@ -1,6 +1,7 @@
 import pytest
 
 from graph import Graph
+from load_search_utilisation_data import load_staff_list
 
 
 @pytest.fixture
@@ -18,17 +19,9 @@ def parse_staff_list_line(line) -> tuple:
 
 
 def test_load_staff_list(utilisation_graph):
-    with open("./Utilisation report - 20230227.xlsx - Staff List.csv") as csv_file:
-        for _ in range(9):
-            line = csv_file.readline()
-        while line:
-            name, gm, employment_type = parse_staff_list_line(line)
-            if name == "" or gm == "" or employment_type == "":
-                line = csv_file.readline()
-                continue
-            utilisation_graph.add_connection(name, "under GM", gm)
-            utilisation_graph.add_connection(name, "employed as", employment_type)
-            line = csv_file.readline()
+    filename = "./Utilisation report - 20230227.xlsx - Staff List.csv"
+    lines_processed = load_staff_list(utilisation_graph, filename)
+    assert lines_processed == 181
 
     assert utilisation_graph.count_connections() == 362
     assert utilisation_graph.has_connection("Aaron Ooi", "under GM", "Dan Cornwall")
