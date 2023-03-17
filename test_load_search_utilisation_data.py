@@ -1,3 +1,5 @@
+import os
+
 import pytest
 
 from graph import Graph
@@ -9,13 +11,8 @@ def utilisation_graph():
     g = Graph("utilisation")
     yield g
 
-    # del g
-    # os.remove("utilisation.json")
-
-
-def parse_staff_list_line(line) -> tuple:
-    data = line.strip().split(',')
-    return tuple(data[:3])
+    del g
+    os.remove("utilisation.json")
 
 
 def test_load_staff_list(utilisation_graph):

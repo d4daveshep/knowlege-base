@@ -25,4 +25,4 @@ def load_staff_list(a_graph: Graph, filename: str) -> int:
 
 if __name__ == "__main__":
     knowledge_graph = Graph("knowledge")
-    filename = "./Utilisation report - 20230227.xlsx - Staff List.csv"
+    file_name = "./Utilisation report - 20230227.xlsx - Staff List.csv"
