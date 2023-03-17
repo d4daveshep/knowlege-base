@@ -1,5 +1,3 @@
-import os
-
 import pytest
 
 from graph import Graph
@@ -13,6 +11,7 @@ def utilisation_graph():
     # del g
     # os.remove("utilisation.json")
 
+
 def parse_staff_list_line(line) -> tuple:
     data = line.strip().split(',')
     return tuple(data[:3])
@@ -24,7 +23,7 @@ def test_load_staff_list(utilisation_graph):
             line = csv_file.readline()
         while line:
             name, gm, employment_type = parse_staff_list_line(line)
-            if (name == "" or gm=="" or employment_type==""):
+            if name == "" or gm == "" or employment_type == "":
                 line = csv_file.readline()
                 continue
             utilisation_graph.add_connection(name, "under GM", gm)
@@ -35,7 +34,6 @@ def test_load_staff_list(utilisation_graph):
     assert utilisation_graph.has_connection("Aaron Ooi", "under GM", "Dan Cornwall")
     assert utilisation_graph.has_connection("Zoe Xu", "under GM", "Malen Hurbuns")
 
-def test_load_time_by_taks(utilisation_graph):
+
+def test_load_time_by_tasks(utilisation_graph):
     assert False  # TODO
-
-
