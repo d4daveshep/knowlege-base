@@ -128,3 +128,10 @@ def test_ignore_duplicate_connections(graph_1):
     conn_id_5 = graph_1.add_connection("Andrew", "has title", "Chief Engineer")
     assert graph_1.count_connections() == 4
     assert conn_id_5 == conn_id_1
+
+
+def test_create_connection_with_date_attributes(graph_1):
+    conn_id_1 = graph_1.add_connection("Andrew", "has title", "Chief Engineer", start_date="03-FEB-22")
+    conn_id_2 = graph_1.add_connection("Andrew", "worked on", "TWG", start_date="28-AUG-22", end_date="10-MAR-23")
+
+    assert False  # TODO do something with start_ end_date attributes

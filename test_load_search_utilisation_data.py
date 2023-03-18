@@ -3,7 +3,7 @@ import os
 import pytest
 
 from graph import Graph
-from load_search_utilisation_data import load_staff_list
+from load_search_utilisation_data import load_staff_list, load_time_by_task
 
 
 @pytest.fixture
@@ -26,4 +26,12 @@ def test_load_staff_list(utilisation_graph):
 
 
 def test_load_time_by_tasks(utilisation_graph):
-    assert False  # TODO
+    filename = "./Utilisation report - 20230227.xlsx - TimeByTask.csv"
+    lines_processed = load_time_by_task(utilisation_graph, filename)
+    assert lines_processed == 5056
+
+    print(f"graph has {utilisation_graph.count_connections()} connections")
+    assert utilisation_graph.has_connection("Terence White", "worked on", "AlphaCert Limited")
+    assert utilisation_graph.has_connection("Terence White", "billed time to", "ALPH-2136 ACC AWS Discovery")
+    assert utilisation_graph.has_connection("Mina Al-Ansari", "worked on", "Woolworths Group Limited")
+    assert utilisation_graph.has_connection("Mina Al-Ansari", "billed time to", "WWAU-XXXX Client Non-Billable Work")

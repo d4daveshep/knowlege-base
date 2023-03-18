@@ -33,7 +33,8 @@ class Graph:
         for conn_id in conn_ids:
             self.connections_db.delete_by_id(conn_id)
 
-    def add_connection(self, subject: str, connection_name: str, target: str) -> str:
+    def add_connection(self, subject: str, connection_name: str, target: str,
+                       start_date: str = None, end_date: str = None) -> str:
         conn_id = self.get_connection_id(subject, connection_name, target)
         if conn_id == "":
             conn_id = self.connections_db.add(
