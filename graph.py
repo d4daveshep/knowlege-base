@@ -103,7 +103,7 @@ class Graph:
         else:
             return []
 
-    def get_connection_data_to_node(self, node_name: str) -> list:
+    def get_connections_to_node(self, node_name: str) -> list:
         got = self.connections_db.get_by_query(
             query=lambda c: c["subject"].casefold() == node_name.casefold() or
                             c["target"].casefold() == node_name.casefold()

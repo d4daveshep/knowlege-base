@@ -46,7 +46,7 @@ def test_full_CRUD_use_case(graph):
     assert graph.count_nodes() == 13
 
     # search for connections to Andrew
-    conns = graph.get_connection_data_to_node("Andrew")
+    conns = graph.get_connections_to_node("Andrew")
     assert len(conns) == 6
 
     # check targets
@@ -70,7 +70,7 @@ def test_full_CRUD_use_case(graph):
     assert "knows" in names
 
     # find connections to Java
-    conns = graph.get_connection_data_to_node("java")  # lower case should work
+    conns = graph.get_connections_to_node("java")  # lower case should work
     assert len(conns) == 3
 
     # check subjects

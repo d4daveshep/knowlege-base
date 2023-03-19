@@ -115,8 +115,8 @@ def test_get_connections_to_node(graph_1):
     assert len(java_connections) == 1
     assert conn_id_3 in java_connections
 
-    andrew_connections = graph_1.get_connection_data_to_node("Andrew")
-    assert len(andrew_connection_ids) == 4
+    andrew_connections = graph_1.get_connections_to_node("Andrew")
+    assert len(andrew_connections) == 4
 
 
 def test_ignore_duplicate_connections(graph_1):
